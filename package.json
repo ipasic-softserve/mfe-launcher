@@ -1,5 +1,6 @@
 {
   "name": "mfe-launcher",
+  "publisher": "IlliaPasichnichenko",
   "displayName": "mfe-launcher",
   "description": "Launches your MFE application using ui-console-shell and localdev proxy",
   "version": "0.0.1",
