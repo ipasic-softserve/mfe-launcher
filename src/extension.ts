@@ -41,6 +41,7 @@ async function runOrchestrator(env: string) {
 
   const localdev = vscode.window.createTerminal({
     name: "localdev proxy",
+    location: { parentTerminal: orchestrator },
   });
   localdev.show(true);
   localdev.sendText(`localdev proxy ${env}`);
