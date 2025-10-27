@@ -3,7 +3,7 @@
   "publisher": "IlliaPasichnichenko",
   "displayName": "mfe-launcher",
   "description": "Launches your MFE application using ui-console-shell and localdev proxy",
-  "version": "0.0.1",
+  "version": "0.2.1",
   "engines": {
     "vscode": "^1.102.0"
   },
@@ -47,7 +47,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "package": "vsce package"
   },
   "devDependencies": {
     "@types/vscode": "^1.102.0",
