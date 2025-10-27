@@ -1,5 +1,8 @@
 import * as vscode from "vscode";
 
+const ORCHESTRATOR_NAME = "ui-console-shell";
+const PROXY_NAME = "localdev proxy";
+
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("mfeLauncher.run.qa", () =>
@@ -31,20 +34,24 @@ async function runOrchestrator(env: string) {
 
   const repoName = folder.name;
 
+  vscode.window.terminals
+    .filter((t) => t.name === ORCHESTRATOR_NAME || t.name === PROXY_NAME)
+    .forEach((t) => t.dispose());
+
   const orchestrator = vscode.window.createTerminal({
-    name: "ui-console-shell",
+    name: ORCHESTRATOR_NAME,
   });
   orchestrator.show(true);
   orchestrator.sendText(
     `cd "${orchestratorPath}" && pnpm local:react-app -e ${env} -a ${repoName}`
   );
 
-  const localdev = vscode.window.createTerminal({
-    name: "localdev proxy",
+  const proxy = vscode.window.createTerminal({
+    name: PROXY_NAME,
     location: { parentTerminal: orchestrator },
   });
-  localdev.show(true);
-  localdev.sendText(`localdev proxy ${env}`);
+  proxy.show(true);
+  proxy.sendText(`${PROXY_NAME} ${env}`);
 }
 
 export function deactivate() {}
@@ -65,7 +72,7 @@ async function promptAndSaveOrchestratorPath(): Promise<string | undefined> {
     canSelectFolders: true,
     canSelectFiles: false,
     canSelectMany: false,
-    title: "Select ui-console-shell folder",
+    title: `Select ${ORCHESTRATOR_NAME} folder`,
     openLabel: "Use this folder",
   });
 
@@ -82,6 +89,6 @@ async function promptAndSaveOrchestratorPath(): Promise<string | undefined> {
     vscode.ConfigurationTarget.Global
   );
 
-  vscode.window.showInformationMessage(`ui-console-shell path saved: ${path}`);
+  vscode.window.showInformationMessage(`${ORCHESTRATOR_NAME} path saved: ${path}`);
   return path;
 }
